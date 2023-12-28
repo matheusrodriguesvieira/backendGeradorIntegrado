@@ -140,25 +140,26 @@ if ($acao == 'store' && $parametro == '') {
         // ---------------------------------------
 
         for ($i = 0; $i < count($dados['escala']); $i++) {
+            $escala = $dados['escala'][$i];
             $sql = $db->prepare('SELECT * from operadores where operadores.matricula = ?');
             $sql->execute([$dados['escala'][$i]['matricula']]);
             $operador = $sql->fetch(PDO::FETCH_ASSOC);
 
             if (!$operador) {
                 echo json_encode([
-                    "message" => "Operador {$dados['escala'][$i]['matricula']} não encontrado.",
+                    "message" => "Operador {$escala['matricula']} não encontrado.",
                 ]);
                 exit;
             }
 
             $sql = $db->prepare('SELECT * from equipamentos where equipamentos.tag = ?');
-            $sql->execute([$dados['escala'][$i]['tag']]);
+            $sql->execute([$escala['tag']]);
             $equipamento = $sql->fetch(PDO::FETCH_ASSOC);
 
 
             if (!$equipamento) {
                 echo json_encode([
-                    "message" => "Equipamento {$dados['escala'][$i]['tag']} não encontrado.",
+                    "message" => "Equipamento {$escala['tag']} não encontrado.",
                 ]);
                 exit;
             }
@@ -168,6 +169,17 @@ if ($acao == 'store' && $parametro == '') {
             if (!$operador[$categoria]) {
                 echo json_encode([
                     "message" => "Operador {$operador['nome']} - {$operador['matricula']} não é autorizado a operar {$equipamento['tag']}",
+                ]);
+                exit;
+            }
+
+            $sql = $db->prepare('select * from transporte where tag = ?');
+            $sql->execute([$escala['transporte']]);
+            $transporte = $sql->fetch(PDO::FETCH_ASSOC);
+
+            if (!$transporte) {
+                echo json_encode([
+                    "message" => "Equipamento de transporte não encontrado"
                 ]);
                 exit;
             }
@@ -194,7 +206,7 @@ if ($acao == 'store' && $parametro == '') {
         }
 
         // Inserir na tabela operadorequipamento
-        $comando = "INSERT INTO operadorequipamento (matricula, tag, idLista, localizacao, atividade, transporte) VALUES (?,?,?,?,?,?)";
+        $comando = "INSERT INTO operadorequipamento (matricula, tagequipamento, idLista, localizacao, atividade, tagtransporte) VALUES (?,?,?,?,?,?)";
         $sql = $db->prepare($comando);
 
         foreach (array_values($dados['escala']) as $valores) {
