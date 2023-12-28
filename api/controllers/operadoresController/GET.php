@@ -70,8 +70,8 @@ if ($acao == 'show' && $parametro != '') {
 
 
     $db = DB::connect();
-    $sql = $db->prepare("SELECT matricula, nome, turma, disponivel, d11, ehgp, dragline, cat777, matriculasupervisor from operadores WHERE operadores.matricula = {$parametro}");
-    $sql->execute();
+    $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores where operadores.matricula = usuarios.matricula and operadores.matricula = ?");
+    $sql->execute([$parametro]);
     $obj = $sql->fetchObject();
 
     if (!$obj) {
