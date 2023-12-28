@@ -45,7 +45,7 @@ if ($acao == 'index' && $parametro == '') {
         $obj[$i]['escala'] = [];
         $obj[$i]['operadoresForaEscala'] = [];
 
-        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadorequipamento.tag, operadorequipamento.localizacao, operadorequipamento.atividade, operadorequipamento.transporte FROM operadorequipamento, operadores, usuarios where operadores.matricula = usuarios.matricula and operadores.matricula = operadorequipamento.matricula and operadorequipamento.idlista = ?");
+        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadorequipamento.tag, operadorequipamento.localtrabalho, operadorequipamento.atividade, operadorequipamento.transporte FROM operadorequipamento, operadores, usuarios where operadores.matricula = usuarios.matricula and operadores.matricula = operadorequipamento.matricula and operadorequipamento.idlista = ?");
         $sql->execute([$obj[$i]['idlista']]);
         $escala = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -95,7 +95,7 @@ if ($acao == 'show' && $parametro != '') {
     $obj['escala'] = [];
     $obj['operadoresForaEscala'] = [];
 
-    $sql = $db->prepare("SELECT operadores.matricula, operadores.nome, tag, operadorequipamento.localizacao, operadorequipamento.atividade, operadorequipamento.transporte FROM operadorequipamento, operadores where operadores.matricula = operadorequipamento.matricula and operadorequipamento.idlista = ?");
+    $sql = $db->prepare("SELECT operadores.matricula, operadores.nome, tag, operadorequipamento.localtrabalho, operadorequipamento.atividade, operadorequipamento.transporte FROM operadorequipamento, operadores where operadores.matricula = operadorequipamento.matricula and operadorequipamento.idlista = ?");
     $sql->execute([$parametro]);
     $escala = $sql->fetchAll(PDO::FETCH_ASSOC);
 
