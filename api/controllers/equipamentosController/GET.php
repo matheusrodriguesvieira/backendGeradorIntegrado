@@ -1,25 +1,43 @@
 <?php if ($acao == 'index' && $parametro == '') {
 
-    $db = DB::connect();
-    $sql = $db->prepare("SELECT equipamentos.tag, equipamentos.categoria, equipamentos.disponivel FROM equipamentos");
-    $sql->execute();
-    $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
+    if (empty($_GET['gerencia'])) {
+        $db = DB::connect();
+        $sql = $db->prepare("SELECT * FROM equipamentos");
+        $sql->execute();
+        $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-    if (!$obj) {
-        $response = array(
-            "message" => "Nenhum equipamento encontrado!"
-        );
-        echo json_encode($response);
+        if (!$obj) {
+            $response = array(
+                "message" => "Nenhum equipamento encontrado!"
+            );
+            echo json_encode($response);
+            exit;
+        }
+
+        echo json_encode($obj);
+        exit;
+    } else {
+        $db = DB::connect();
+        $sql = $db->prepare("SELECT * FROM equipamentos where equipamentos.idgerencia = ?");
+        $sql->execute();
+        $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!$obj) {
+            $response = array(
+                "message" => "Nenhum equipamento encontrado!"
+            );
+            echo json_encode($response);
+            exit;
+        }
+
+        echo json_encode($obj);
         exit;
     }
-
-    echo json_encode($obj);
-    exit;
 }
 
 if ($acao == 'show' && $parametro != '') {
     $db = DB::connect();
-    $sql = $db->prepare("SELECT equipamentos.tag, equipamentos.categoria, equipamentos.disponivel FROM equipamentos WHERE equipamentos.tag = '{$parametro}'");
+    $sql = $db->prepare("SELECT * FROM equipamentos WHERE equipamentos.tag = '{$parametro}'");
     $sql->execute();
     $obj = $sql->fetchObject();
 
