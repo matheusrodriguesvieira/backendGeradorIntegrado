@@ -2,7 +2,7 @@
 
     if (empty($_GET['gerencia'])) {
         $db = DB::connect();
-        $sql = $db->prepare("SELECT * FROM equipamentos");
+        $sql = $db->prepare("SELECT tag, categoria, disponivel, idgerencia as gerencia FROM equipamentos");
         $sql->execute();
         $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -18,7 +18,7 @@
         exit;
     } else {
         $db = DB::connect();
-        $sql = $db->prepare("SELECT * FROM equipamentos where equipamentos.idgerencia = ?");
+        $sql = $db->prepare("SELECT tag, categoria, disponivel, idgerencia as gerencia FROM equipamentos where equipamentos.idgerencia = ?");
         $sql->execute();
         $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -37,7 +37,7 @@
 
 if ($acao == 'show' && $parametro != '') {
     $db = DB::connect();
-    $sql = $db->prepare("SELECT * FROM equipamentos WHERE equipamentos.tag = '{$parametro}'");
+    $sql = $db->prepare("SELECT tag, categoria, disponivel, idgerencia as gerencia FROM equipamentos WHERE equipamentos.tag = '{$parametro}'");
     $sql->execute();
     $obj = $sql->fetchObject();
 
