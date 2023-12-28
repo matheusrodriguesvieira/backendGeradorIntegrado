@@ -53,7 +53,7 @@ if ($acao == 'index' && $parametro == '') {
             $obj[$i]['escala'][] = $escala[$j];
         }
 
-        $sql = $db->prepare("SELECT operadores.matricula, operadores.nome FROM operadoresforaescala, operadores where operadores.matricula = operadoresforaescala.matricula and  operadoresforaescala.idlista = ?");
+        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome FROM operadoresforaescala, operadores, usuarios where operadores.matricula = operadoresforaescala.matricula and  operadoresforaescala.idlista = ?");
         $sql->execute([$obj[$i]['idlista']]);
         $operadorForaEscala = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -95,7 +95,7 @@ if ($acao == 'show' && $parametro != '') {
     $obj['escala'] = [];
     $obj['operadoresForaEscala'] = [];
 
-    $sql = $db->prepare("SELECT operadores.matricula, operadores.nome, operadorequipamento.tagequipamento, operadorequipamento.localtrabalho, operadorequipamento.atividade, operadorequipamento.tagtransporte FROM operadorequipamento, operadores where operadores.matricula = operadorequipamento.matricula and operadorequipamento.idlista = ?");
+    $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadorequipamento.tagequipamento, operadorequipamento.localtrabalho, operadorequipamento.atividade, operadorequipamento.tagtransporte FROM operadorequipamento, operadores where operadores.matricula = operadorequipamento.matricula and operadorequipamento.idlista = ?");
     $sql->execute([$parametro]);
     $escala = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -103,7 +103,7 @@ if ($acao == 'show' && $parametro != '') {
         $obj['escala'][] = $escala[$j];
     }
 
-    $sql = $db->prepare("SELECT operadores.matricula, operadores.nome FROM operadoresforaescala, operadores where operadores.matricula = operadoresforaescala.matricula and  operadoresforaescala.idlista = ?");
+    $sql = $db->prepare("SELECT operadores.matricula, operadores.nome FROM operadoresforaescala, usuarios, operadores where operadores.matricula = operadoresforaescala.matricula and  operadoresforaescala.idlista = ?");
     $sql->execute([$parametro]);
     $operadorForaEscala = $sql->fetchAll(PDO::FETCH_ASSOC);
 
