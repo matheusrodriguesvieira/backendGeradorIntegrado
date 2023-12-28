@@ -44,6 +44,20 @@ if ($acao == 'store' && $parametro == '') {
         exit;
     }
 
+    if (!array_key_exists('gerencia', $dados)) {
+        echo json_encode([
+            "message" => "erro ao criar lista de escala. Sem o parâmetro 'gerencia'"
+        ]);
+        exit;
+    }
+
+    if ($dados['gerencia'] == "") {
+        echo json_encode([
+            "message" => "erro ao criar lista de escala. Parâmetro 'gerencia' está vazio"
+        ]);
+        exit;
+    }
+
     date_default_timezone_set("America/Sao_Paulo");
     $dataCriacao = date("Y-m-d");
     $horarioCriacao = date("H:i:s");
@@ -52,14 +66,14 @@ if ($acao == 'store' && $parametro == '') {
 
     if (!array_key_exists('operadoresForaEscala', $dados)) {
         echo json_encode([
-            "message" => "erro ao criar lista de escala"
+            "message" => "erro ao criar lista de escala. Sem o parâmetro operadoresForaEscala"
         ]);
         exit;
     }
 
     if (!array_key_exists('escala', $dados)) {
         echo json_encode([
-            "message" => "erro ao criar lista de escala"
+            "message" => "erro ao criar lista de escala. Sem o parâmetro escala"
         ]);
         exit;
     }
@@ -136,6 +150,23 @@ if ($acao == 'store' && $parametro == '') {
     try {
 
         // ---------------------------------------
+        // VERIFICANDO SE A GERENCIA EXISTE
+        // ---------------------------------------
+
+        $sql = $db->prepare('select * from gerencia where id = ?');
+        $sql->execute([$dados['gerencia']]);
+        $gerencia = $sql->fetch(PDO::FETCH_ASSOC);
+
+        if (!$gerencia) {
+            echo json_encode([
+                "message" => "Gerência {$dados['gerencia']} não encontrada.",
+            ]);
+            exit;
+        }
+
+
+
+        // ---------------------------------------
         // VERIFICANDO SE O OPERADOR EXISTE E É AUTORIZADO A OPERAR UM EQUIPAMENTO
         // ---------------------------------------
 
@@ -187,10 +218,10 @@ if ($acao == 'store' && $parametro == '') {
 
 
         // Inserir na tabela listaescalas
-        $comando = "INSERT INTO listaescalas (nomeLista, horarioCriacao, dataCriacao, turma) VALUES (?,?,?,?)";
+        $comando = "INSERT INTO listaescalas (nome, horarioCriacao, dataCriacao, turma, idgerencia) VALUES (?,?,?,?,?)";
         $sql = $db->prepare($comando);
         // USANDO PREPARED STATEMENTS
-        $sql->execute([$nomeLista, $horarioCriacao, $dataCriacao, $dados['turma']]);
+        $sql->execute([$nomeLista, $horarioCriacao, $dataCriacao, $dados['turma'], $dados['gerencia']]);
 
 
         // PEGA O ULTIMO ID INSERIDO
@@ -206,7 +237,7 @@ if ($acao == 'store' && $parametro == '') {
         }
 
         // Inserir na tabela operadorequipamento
-        $comando = "INSERT INTO operadorequipamento (matricula, tagequipamento, idLista, localizacao, atividade, tagtransporte) VALUES (?,?,?,?,?,?)";
+        $comando = "INSERT INTO operadorequipamento (matricula, tagequipamento, idLista, localtrabalho, atividade, tagtransporte) VALUES (?,?,?,?,?,?)";
         $sql = $db->prepare($comando);
 
         foreach (array_values($dados['escala']) as $valores) {
