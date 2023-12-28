@@ -26,7 +26,8 @@ if ($acao == 'index' && $parametro == '') {
 
     if (empty($_GET['turma'])) {
         $db = DB::connect();
-        $sql = $db->prepare("SELECT matricula, nome, turma, disponivel, d11, ehgp, dragline, cat777, matriculasupervisor from operadores");
+        // $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadores.disponivel, usuarios.matriculasupervisor from operadores, usuarios");
+        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores where operadores.matricula = usuarios.matricula and usuarios.matricula > 5");
         $sql->execute();
         $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -45,7 +46,7 @@ if ($acao == 'index' && $parametro == '') {
         $turma = $_GET['turma'];
 
         $db = DB::connect();
-        $sql = $db->prepare("SELECT matricula, nome, turma, disponivel, d11, ehgp, dragline, cat777, matriculasupervisor from operadores WHERE operadores.turma = ?");
+        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores where operadores.matricula = usuarios.matricula and usuarios.matricula > 5 and usuarios.turma = ?");
         $sql->execute([$turma]);
         $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
