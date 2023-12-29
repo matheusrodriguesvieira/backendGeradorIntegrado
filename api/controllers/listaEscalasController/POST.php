@@ -229,7 +229,7 @@ if ($acao == 'store' && $parametro == '') {
 
 
         // Inserir na tabela operadorforaescala
-        $comando = "INSERT INTO operadorforaescala (matricula, idLista) VALUES (?,?)";
+        $comando = "INSERT INTO operadoresforaescala (matricula, idLista) VALUES (?,?)";
         $sql = $db->prepare($comando);
 
         foreach (array_values($dados['operadoresForaEscala']) as $valores) {
