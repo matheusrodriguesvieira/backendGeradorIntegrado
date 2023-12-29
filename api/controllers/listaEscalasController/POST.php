@@ -144,6 +144,19 @@ if ($acao == 'store' && $parametro == '') {
     }
 
 
+    // ---------------------------------------
+    // VERIFICANDO SE O EQUIPAMENTO ESTÁ EM MULTIPLOS CAMPOS
+    // ---------------------------------------
+    for ($i = 0; $i < count($dados['operadoresForaEscala']); $i++) {
+        if (count(array_values(array_filter($dados['operadoresForaEscala'], fn ($element) => $element == $dados['operadoresForaEscala'][$i]))) > 1) {
+            echo json_encode([
+                "message" => "Tentando inserir operador múltiplas vezes fora de escala"
+            ]);
+            exit;
+        }
+    }
+
+
 
     // INICIA A TRANSAÇÃO
     $db->beginTransaction();
