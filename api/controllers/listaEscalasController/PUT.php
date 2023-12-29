@@ -114,6 +114,20 @@
                 }
 
                 // ---------------------------------------
+                // VERIFICANDO SE O transporte existe
+                // ---------------------------------------
+                $sql = $db->prepare('select * from transporte where tag = ?');
+                $sql->execute([$dados['escala'][$i]['transporte']]);
+                $transporte = $sql->fetch(PDO::FETCH_ASSOC);
+
+                if (!$transporte) {
+                    echo json_encode([
+                        "message" => "Equipamento de transporte não encontrado"
+                    ]);
+                    exit;
+                }
+
+                // ---------------------------------------
                 // VERIFICANDO SE O OPERADOR é autorizado a operar
                 // ---------------------------------------
 
@@ -122,7 +136,7 @@
                 if (!$operador[$categoria]) {
                     echo json_encode([
                         "error" => true,
-                        "message" => "Operador {$operador['nome']} - {$operador['matricula']} não é autorizado a operar {$equipamento['tag']}",
+                        "message" => "Operador {$operador['matricula']} não é autorizado a operar {$equipamento['tag']}",
                     ]);
                     exit;
                 }
@@ -130,7 +144,7 @@
                 // ---------------------------------------
                 // VERIFICANDO SE O OPERADOR já esta escalado
                 // ---------------------------------------
-                $sql = $db->prepare('SELECT * from operadorequipamento where operadorequipamento.matricula = ? and operadorequipamento.idlista = ? and operadorequipamento.tag != ? and operadorequipamento.matricula not between 1 and 5');
+                $sql = $db->prepare('SELECT * from operadorequipamento where operadorequipamento.matricula = ? and operadorequipamento.idlista = ? and operadorequipamento.tagequipamento != ? and operadorequipamento.matricula not between 1 and 5');
                 $sql->execute([$dados['escala'][$i]['matricula'], $parametro, $dados['escala'][$i]['tag']]);
                 $operador = $sql->fetch(PDO::FETCH_ASSOC);
 
@@ -146,7 +160,7 @@
 
             foreach ($dados['escala'] as $valor) {
 
-                $sql = $db->prepare("SELECT * FROM operadorequipamento WHERE operadorequipamento.idlista = ? and operadorequipamento.tag = ?");
+                $sql = $db->prepare("SELECT * FROM operadorequipamento WHERE operadorequipamento.idlista = ? and operadorequipamento.tagequipamento = ?");
                 $sql->execute([$parametro, $valor['tag']]);
                 $obj = $sql->fetch(PDO::FETCH_ASSOC);
 
@@ -158,23 +172,23 @@
                 // VERIFICAR SE O OPERADOR QUE ESTÁ SAINDO DA ESCALA É VÁLIDO, SE SIM, ADICIONÁLO A LISTA FORA DE ESCALA
                 // ----------------------------------------
                 if ($obj['matricula'] > 5) {
-                    $sql = $db->prepare("INSERT INTO operadorforaescala (matricula, idLista) VALUES (?,?)");
+                    $sql = $db->prepare("INSERT INTO operadoresforaescala (matricula, idLista) VALUES (?,?)");
                     $sql->execute([$obj['matricula'], $parametro]);
                 }
 
                 // ----------------------------------------
                 // VERIFICAR SE O OPERADOR QUE ESTÁ SENDO ADICIONADO EXISTE NA LISTA FORA DE ESCALA
                 // ----------------------------------------
-                $sql = $db->prepare("SELECT * FROM operadorforaescala WHERE operadorforaescala.idlista = ? and operadorforaescala.matricula = ?");
+                $sql = $db->prepare("SELECT * FROM operadoresforaescala WHERE operadoresforaescala.idlista = ? and operadoresforaescala.matricula = ?");
                 $sql->execute([$parametro, $valor['matricula']]);
                 $obj = $sql->fetch(PDO::FETCH_ASSOC);
 
                 if ($obj) {
-                    $sql = $db->prepare("DELETE FROM operadorforaescala WHERE operadorforaescala.idlista = ? and operadorforaescala.matricula = ?");
+                    $sql = $db->prepare("DELETE FROM operadoresforaescala WHERE operadoresforaescala.idlista = ? and operadoresforaescala.matricula = ?");
                     $sql->execute([$parametro, $valor['matricula']]);
                 }
 
-                $sql = $db->prepare("UPDATE operadorequipamento SET  matricula = ?, localizacao = ?, atividade = ?, transporte = ? WHERE operadorequipamento.idlista = ? and operadorequipamento.tag = ?");
+                $sql = $db->prepare("UPDATE operadorequipamento SET  matricula = ?, localtrabalho = ?, atividade = ?, tagtransporte = ? WHERE operadorequipamento.idlista = ? and operadorequipamento.tagequipamento = ?");
                 $sql->execute([$valor['matricula'], $valor['localizacao'], $valor['atividade'], $valor['transporte'], $parametro, $valor['tag']]);
             }
 
