@@ -216,6 +216,24 @@ if ($acao == 'store' && $parametro == '') {
             }
         }
 
+        // -----------------------------
+        // VERIFICANDO SE OS OPERADORES FORA DE ESCALA SÃO VÁLIDOS
+        // -----------------------------
+
+        for ($i = 0; $i < count($dados['operadoresForaEscala']); $i++) {
+            $operadorForaEscala = $dados['operadoresForaEscala'][$i];
+            $sql = $db->prepare('SELECT * from operadores where operadores.matricula = ?');
+            $sql->execute([$operadorForaEscala]);
+            $operador = $sql->fetch(PDO::FETCH_ASSOC);
+
+            if (!$operador) {
+                echo json_encode([
+                    "message" => "Operador $operadorForaEscala não encontrado.",
+                ]);
+                exit;
+            }
+        }
+
 
         // Inserir na tabela listaescalas
         $comando = "INSERT INTO listaescalas (nome, horarioCriacao, dataCriacao, turma, idgerencia) VALUES (?,?,?,?,?)";
