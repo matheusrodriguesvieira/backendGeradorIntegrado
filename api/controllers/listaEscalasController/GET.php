@@ -103,7 +103,7 @@ if ($acao == 'show' && $parametro != '') {
         $obj['escala'][] = $escala[$j];
     }
 
-    $sql = $db->prepare("SELECT operadores.matricula, operadores.nome FROM operadoresforaescala, usuarios, operadores where operadores.matricula = operadoresforaescala.matricula and  operadoresforaescala.idlista = ?");
+    $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome FROM operadoresforaescala, usuarios, operadores where operadores.matricula = operadoresforaescala.matricula and  operadoresforaescala.idlista = ?");
     $sql->execute([$parametro]);
     $operadorForaEscala = $sql->fetchAll(PDO::FETCH_ASSOC);
 
