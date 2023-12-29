@@ -34,13 +34,13 @@ if ($acao == 'delete') {
         // -----------------------------
         // VERIFICA SE EXISTE REFERENCIA NA TABELA DE OPERADORFORAESCALA
         // -----------------------------
-        $sql = 'SELECT * FROM operadorforaescala where operadoresforaescala.idlista = ?';
+        $sql = 'SELECT * FROM operadoresforaescala where operadoresforaescala.idlista = ?';
         $sql = $db->prepare($sql);
         $sql->execute([$parametro]);
         $obj = $sql->fetch(PDO::FETCH_ASSOC);
 
         if ($obj) {
-            $sql = 'DELETE FROM operadorforaescala WHERE operadoresforaescala.idlista = ?';
+            $sql = 'DELETE FROM operadoresforaescala WHERE operadoresforaescala.idlista = ?';
             $sql = $db->prepare($sql);
             $sql->execute([$parametro]);
         }
