@@ -95,7 +95,7 @@ if ($acao == 'show' && $parametro != '') {
     $obj['escala'] = [];
     $obj['operadoresForaEscala'] = [];
 
-    $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadorequipamento.tagequipamento, operadorequipamento.localtrabalho, operadorequipamento.atividade, operadorequipamento.tagtransporte FROM operadorequipamento, operadores where operadores.matricula = operadorequipamento.matricula and operadorequipamento.idlista = ?");
+    $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadorequipamento.tagequipamento, operadorequipamento.localtrabalho, operadorequipamento.atividade, operadorequipamento.tagtransporte FROM operadorequipamento, operadores, usuarios where operadores.matricula = operadorequipamento.matricula and operadorequipamento.idlista = ?");
     $sql->execute([$parametro]);
     $escala = $sql->fetchAll(PDO::FETCH_ASSOC);
 

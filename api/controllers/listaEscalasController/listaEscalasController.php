@@ -39,14 +39,14 @@ if ($api == 'listaEscalas') {
     }
 
     if ($metodo == 'DELETE') {
-        if (Usuarios::verificar('supervisores')) {
-            require_once(realpath(dirname(__FILE__) . '/DELETE.php'));
-        } else {
-            echo json_encode([
-                'error' => true,
-                'message' => 'Você não está logado, ou seu token é inválido.'
-            ]);
-            exit;
-        }
+        require_once(realpath(dirname(__FILE__) . '/DELETE.php'));
+        // if (Usuarios::verificar('supervisores')) {
+        // } else {
+        //     echo json_encode([
+        //         'error' => true,
+        //         'message' => 'Você não está logado, ou seu token é inválido.'
+        //     ]);
+        //     exit;
+        // }
     }
 }
