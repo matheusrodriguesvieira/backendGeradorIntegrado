@@ -27,6 +27,7 @@ if ($api == 'operadores') {
                 'error' => true,
                 "message" => "Acesso não autorizado!"
             ]);
+            exit;
         }
 
 
@@ -58,6 +59,7 @@ if ($api == 'operadores') {
                 'error' => true,
                 "message" => "Acesso não autorizado!"
             ]);
+            exit;
         }
 
         require_once(realpath(dirname(__FILE__) . '/PUT.php'));
