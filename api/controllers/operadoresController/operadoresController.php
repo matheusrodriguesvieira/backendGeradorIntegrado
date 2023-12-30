@@ -3,7 +3,7 @@ if ($api == 'operadores') {
 
     if ($metodo == 'GET') {
 
-        if (!empty($_GET['login'])) {
+        if (empty($_GET['login'])) {
             echo json_encode([
                 'error' => true,
                 'message' => "Parâmetro 'login' está ausente!"
@@ -34,7 +34,7 @@ if ($api == 'operadores') {
     }
 
     if ($metodo == 'PUT') {
-        if (!empty($_GET['login'])) {
+        if (empty($_GET['login'])) {
             echo json_encode([
                 'error' => true,
                 'message' => "Parâmetro 'login' está ausente!"
