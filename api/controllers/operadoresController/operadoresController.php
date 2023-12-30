@@ -24,10 +24,4 @@ if ($api == 'operadores') {
         //     exit;
         // }
     }
-
-    if ($metodo == "POST") {
-        if ($acao == "login" && $parametro == "") {
-            Usuarios::login($api);
-        }
-    }
 }

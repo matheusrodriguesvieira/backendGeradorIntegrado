@@ -3,7 +3,7 @@ if ($api == 'validate-token') {
 
     if ($metodo == 'GET') {
         if ($acao == "supervisor" && $parametro == "") {
-            if (Usuarios::verificar('supervisores')) {
+            if (Usuarios::validarToken('supervisores')) {
                 echo json_encode([
                     'error' => false,
                     'message' => 'Token válido.'
@@ -19,7 +19,7 @@ if ($api == 'validate-token') {
         }
 
         if ($acao == "operador" && $parametro == "") {
-            if (Usuarios::verificar('operadores')) {
+            if (Usuarios::validarToken('operadores')) {
                 echo json_encode([
                     'error' => false,
                     'message' => 'Token válido.'
