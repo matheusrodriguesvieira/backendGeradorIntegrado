@@ -5,25 +5,6 @@ if ($acao == 'index' && $parametro == '') {
     // PEGA TODOS OS OPERADORES
     // ---------------------------------------
 
-    // $json = file_get_contents("php://input");
-    // $dados = json_decode($json, true);
-
-    // if (!$dados) {
-    //     $response = array(
-    //         "message" => 'Parâmetro \'turma\' não encontrado.'
-    //     );
-    //     echo json_encode($response);
-    //     exit;
-    // }
-
-    // if (!array_key_exists('turma', $dados)) {
-    //     $response = array(
-    //         "message" => 'Parâmetro \'turma\' não encontrado.'
-    //     );
-    //     echo json_encode($response);
-    //     exit;
-    // }
-
     if (empty($_GET['turma'])) {
         $db = DB::connect();
         // $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadores.disponivel, usuarios.matriculasupervisor from operadores, usuarios");

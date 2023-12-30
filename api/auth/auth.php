@@ -50,7 +50,7 @@ class Usuarios
     }
 
     // VERIFICA SE O TOKEN É VÁLIDO, CASO CONTRÁRIO, APAGA O TOKEN EXISTENTE
-    public static function validarToken()
+    public static function validarToken($login)
     {
         $headers = getallheaders();
         if (isset($headers['authorization'])) {
@@ -59,15 +59,16 @@ class Usuarios
             return false;
         }
 
+
+
         $db   = DB::connect();
-        $rs   = $db->prepare("SELECT * FROM autenticacao WHERE token = ?");
-        $exec = $rs->execute([$token]);
+        $rs   = $db->prepare("SELECT * FROM autenticacao WHERE token = ? and matricula = ?");
+        $exec = $rs->execute([$token, $login]);
         $obj  = $rs->fetchObject();
         $rows = $rs->rowCount();
         $secretJWT = $GLOBALS['secretJWT'];
 
         if ($rows > 0) {
-            $idDB    = $obj->matricula;
             $tokenDB = $obj->token;
 
             $decodedJWT = JWT::decode($tokenDB, $secretJWT);
@@ -75,7 +76,7 @@ class Usuarios
                 return true;
             } else {
                 $sql = $db->prepare("UPDATE autenticacao SET token = '' WHERE matricula = ?");
-                $sql->execute([$idDB]);
+                $sql->execute([$login]);
                 return false;
             }
         } else {
