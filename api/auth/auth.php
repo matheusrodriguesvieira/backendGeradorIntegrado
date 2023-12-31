@@ -8,7 +8,7 @@ class Usuarios
         $secretJWT = $GLOBALS['secretJWT'];
 
         $db = DB::connect();
-        $rs = $db->prepare("SELECT usuarios.nome, usuarios.matricula, autenticacao.senha FROM usuarios, autenticacao WHERE usuarios.matricula = autenticacao.matricula and  usuarios.matricula = ?");
+        $rs = $db->prepare("SELECT usuarios.nome, usuarios.matricula, autenticacao.senha, usuarios.idgerencia FROM usuarios, autenticacao WHERE usuarios.matricula = autenticacao.matricula and  usuarios.matricula = ?");
         $exec = $rs->execute([$login]);
         $obj = $rs->fetchObject();
         $rows = $rs->rowCount();
@@ -39,7 +39,11 @@ class Usuarios
             return [
                 'error' => false,
                 'token' => $token,
-                'data' => JWT::decode($token, $secretJWT)
+                'data' => [
+                    "matricula" =>  $obj->matricula,
+                    "nome"      =>  $obj->nome,
+                    "gerencia"  =>  $obj->idgerencia
+                ]
             ];
         } else if (!$validPassword) {
             return [
