@@ -5,10 +5,10 @@ if ($acao == 'index' && $parametro == '') {
     // PEGA TODOS OS OPERADORES
     // ---------------------------------------
 
-    if (empty($_GET['turma'])) {
+    if (empty($_GET['turma']) || empty($_GET['gerencia'])) {
         $db = DB::connect();
         // $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadores.disponivel, usuarios.matriculasupervisor from operadores, usuarios");
-        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, gerencia.nome as gerencia, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5");
+        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, usuarios.turma, gerencia.nome as gerencia, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5");
         $sql->execute();
         $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -27,7 +27,7 @@ if ($acao == 'index' && $parametro == '') {
         $turma = $_GET['turma'];
 
         $db = DB::connect();
-        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, gerencia.nome as gerencia, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5 and usuarios.turma = ?");
+        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, usuarios.turma, gerencia.nome as gerencia, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5 and usuarios.turma = ?");
         $sql->execute([$turma]);
         $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
