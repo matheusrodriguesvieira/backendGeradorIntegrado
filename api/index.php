@@ -54,4 +54,3 @@ require_once(realpath(dirname(__FILE__) . '/auth/validateToken.php'));
 require_once(realpath(dirname(__FILE__) . '/controllers/listaEscalasController/listaEscalasController.php'));
 require_once(realpath(dirname(__FILE__) . '/controllers/operadoresController/operadoresController.php'));
 require_once(realpath(dirname(__FILE__) . '/controllers/equipamentosController/equipamentosController.php'));
-require_once(realpath(dirname(__FILE__) . '/controllers/supervisoresController/supervisoresController.php'));
