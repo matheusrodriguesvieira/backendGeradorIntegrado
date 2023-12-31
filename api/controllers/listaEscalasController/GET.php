@@ -32,11 +32,20 @@ if ($acao == 'index' && $parametro == '') {
         exit;
     }
 
+    if (!$_GET['gerencia']) {
+        $response = array(
+            "message" => 'Parâmetro \'gerencia\' não encontrado.'
+        );
+        echo json_encode($response);
+        exit;
+    }
+
     $turma = $_GET['turma'];
+    $gerencia = $_GET['gerencia'];
 
     $db = DB::connect();
-    $sql = $db->prepare("SELECT * FROM listaescalas WHERE listaescalas.turma = ?");
-    $sql->execute([$turma]);
+    $sql = $db->prepare("SELECT * FROM listaescalas WHERE listaescalas.turma = ? and listaescalas.idgerencia = ?");
+    $sql->execute([$turma, $gerencia]);
     $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
 
