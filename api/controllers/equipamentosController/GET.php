@@ -19,7 +19,7 @@
     } else {
         $db = DB::connect();
         $sql = $db->prepare("SELECT tag, categoria, disponivel, idgerencia as gerencia FROM equipamentos where equipamentos.idgerencia = ?");
-        $sql->execute($_GET['gerencia']);
+        $sql->execute([$_GET['gerencia']]);
         $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$obj) {
