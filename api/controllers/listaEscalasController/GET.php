@@ -58,6 +58,8 @@ if ($acao == 'index' && $parametro == '') {
         $sql->execute([$obj[$i]['idlista']]);
         $escala = $sql->fetchAll(PDO::FETCH_ASSOC);
 
+
+
         for ($j = 0; $j < count($escala); $j++) {
             $obj[$i]['escala'][] = $escala[$j];
         }

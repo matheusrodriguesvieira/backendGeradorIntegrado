@@ -11,18 +11,13 @@ if ($acao == 'index' && $parametro == '') {
         $gerencia = $_GET['gerencia'];
 
         $db = DB::connect();
+
+        // $sql = $db->prepare("SELECT * from operadores where operadores.matricula > 5");
+        // $sql->execute();
         // $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadores.disponivel, usuarios.matriculasupervisor from operadores, usuarios");
-        $sql = $db->prepare("SELECT usuarios.nome, usuarios.turma, gerencia.nome as gerencia, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5 and usuarios.turma = ? and usuarios.idgerencia = ?");
+        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, usuarios.turma, gerencia.nome as gerencia, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5 and usuarios.turma = ? and usuarios.idgerencia = ?");
         $sql->execute([$turma, $gerencia]);
-        $resultado1 = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-        $sql = $db->prepare("SELECT * from operadores where operadores.matricula > 5");
-        $sql->execute();
-        $resultado2 = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-
-        $obj = [$resultado1, $resultado2];
-
+        $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$obj) {
             $response = array(
@@ -30,6 +25,19 @@ if ($acao == 'index' && $parametro == '') {
             );
             echo json_encode($response);
             exit;
+        }
+
+        for ($i = 0; $i < count($obj); $i++) {
+            $obj[$i]['autorizadoOperar'] = [];
+
+            $sql = $db->prepare("SELECT * from operadores where operadores.matricula = ?");
+            $sql->execute([$obj['matricula']]);
+            $operador = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+            unset($operador['matricula']);
+            unset($operador['disponivel']);
+
+            $obj[$i]['autorizadoOperar'][] = $operador;
         }
 
         echo json_encode($obj);
@@ -37,17 +45,11 @@ if ($acao == 'index' && $parametro == '') {
     }
     if (empty($_GET['turma']) || empty($_GET['gerencia'])) {
         $db = DB::connect();
-        // $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadores.disponivel, usuarios.matriculasupervisor from operadores, usuarios");
-        $sql = $db->prepare("SELECT usuarios.nome, usuarios.turma, gerencia.nome as gerencia, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5");
-        $sql->execute();
-        $resultado1 = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-        $sql = $db->prepare("SELECT * from operadores where operadores.matricula > 5");
+        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadores.disponivel, usuarios.matriculasupervisor from operadores, usuarios");
         $sql->execute();
 
-        $resultado2 = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-        $obj = [$resultado1, $resultado2];
+        $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$obj) {
             $response = array(
@@ -56,6 +58,21 @@ if ($acao == 'index' && $parametro == '') {
             echo json_encode($response);
             exit;
         }
+
+
+        for ($i = 0; $i < count($obj); $i++) {
+            $obj[$i]['autorizadoOperar'] = [];
+
+            $sql = $db->prepare("SELECT * from operadores where operadores.matricula = ?");
+            $sql->execute([$obj['matricula']]);
+            $operador = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+            unset($operador['matricula']);
+            unset($operador['disponivel']);
+
+            $obj[$i]['autorizadoOperar'][] = $operador;
+        }
+
 
         echo json_encode($obj);
         exit;
@@ -68,14 +85,8 @@ if ($acao == 'index' && $parametro == '') {
         $db = DB::connect();
         $sql = $db->prepare("SELECT usuarios.nome, usuarios.turma, gerencia.nome as gerencia, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5 and usuarios.turma = ?");
         $sql->execute([$turma]);
-        $resultado1 = $sql->fetchAll(PDO::FETCH_ASSOC);
+        $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-        $sql = $db->prepare("SELECT * from operadores where operadores.matricula > 5");
-        $sql->execute();
-        $resultado2 = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-
-        $obj = [$resultado1, $resultado2];
 
         if (!$obj) {
             $response = array(
@@ -83,6 +94,19 @@ if ($acao == 'index' && $parametro == '') {
             );
             echo json_encode($response);
             exit;
+        }
+
+        for ($i = 0; $i < count($obj); $i++) {
+            $obj[$i]['autorizadoOperar'] = [];
+
+            $sql = $db->prepare("SELECT * from operadores where operadores.matricula = ?");
+            $sql->execute([$obj['matricula']]);
+            $operador = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+            unset($operador['matricula']);
+            unset($operador['disponivel']);
+
+            $obj[$i]['autorizadoOperar'][] = $operador;
         }
 
         echo json_encode($obj);
@@ -96,15 +120,7 @@ if ($acao == 'index' && $parametro == '') {
         $db = DB::connect();
         $sql = $db->prepare("SELECT usuarios.nome, usuarios.turma, gerencia.nome as gerencia, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5 and usuarios.idgerencia = ?");
         $sql->execute([$gerencia]);
-        $resultado1 = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-
-        $sql = $db->prepare("SELECT * from operadores where operadores.matricula > 5");
-        $sql->execute();
-        $resultado2 = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-
-        $obj = [$resultado1, $resultado2];
+        $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$obj) {
             $response = array(
@@ -112,6 +128,19 @@ if ($acao == 'index' && $parametro == '') {
             );
             echo json_encode($response);
             exit;
+        }
+
+        for ($i = 0; $i < count($obj); $i++) {
+            $obj[$i]['autorizadoOperar'] = [];
+
+            $sql = $db->prepare("SELECT * from operadores where operadores.matricula = ?");
+            $sql->execute([$obj['matricula']]);
+            $operador = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+            unset($operador['matricula']);
+            unset($operador['disponivel']);
+
+            $obj[$i]['autorizadoOperar'][] = $operador;
         }
 
         echo json_encode($obj);
