@@ -34,7 +34,7 @@ if ($acao == 'index' && $parametro == '') {
         $sql->execute();
         $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-        $sql = $db->prepare("SELECT * from operadores where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5");
+        $sql = $db->prepare("SELECT * from operadores where operadores.matricula > 5");
         $sql->execute();
 
         $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
