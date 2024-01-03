@@ -46,7 +46,8 @@ if ($acao == 'index' && $parametro == '') {
 
     if (empty($_GET['turma']) && empty($_GET['gerencia'])) {
         $db = DB::connect();
-        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadores.disponivel, usuarios.matriculasupervisor from operadores, usuarios");
+        // $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadores.disponivel, usuarios.matriculasupervisor from operadores, usuarios");
+        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, usuarios.turma, gerencia.nome as gerencia, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5");
         $sql->execute();
 
 
