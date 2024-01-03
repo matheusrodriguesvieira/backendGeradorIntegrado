@@ -17,7 +17,7 @@ if ($acao == 'index' && $parametro == '') {
         // $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadores.disponivel, usuarios.matriculasupervisor from operadores, usuarios");
         $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, usuarios.turma, gerencia.nome as gerencia, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5 and usuarios.turma = ? and usuarios.idgerencia = ?");
         $sql->execute([$turma, $gerencia]);
-        $obj = $sql->fetch(PDO::FETCH_ASSOC);
+        $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$obj) {
             $response = array(
@@ -50,7 +50,7 @@ if ($acao == 'index' && $parametro == '') {
         $sql->execute();
 
 
-        $obj = $sql->fetch(PDO::FETCH_ASSOC);
+        $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$obj) {
             $response = array(
@@ -85,7 +85,7 @@ if ($acao == 'index' && $parametro == '') {
         $db = DB::connect();
         $sql = $db->prepare("SELECT usuarios.nome, usuarios.turma, gerencia.nome as gerencia, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5 and usuarios.turma = ?");
         $sql->execute([$turma]);
-        $obj = $sql->fetch(PDO::FETCH_ASSOC);
+        $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
 
         if (!$obj) {
@@ -119,7 +119,7 @@ if ($acao == 'index' && $parametro == '') {
         $db = DB::connect();
         $sql = $db->prepare("SELECT usuarios.nome, usuarios.turma, gerencia.nome as gerencia, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5 and usuarios.idgerencia = ?");
         $sql->execute([$gerencia]);
-        $obj = $sql->fetch(PDO::FETCH_ASSOC);
+        $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$obj) {
             $response = array(
