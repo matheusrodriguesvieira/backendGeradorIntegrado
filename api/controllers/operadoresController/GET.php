@@ -44,7 +44,7 @@ if ($acao == 'index' && $parametro == '') {
         exit;
     }
 
-    if (empty($_GET['turma']) || empty($_GET['gerencia'])) {
+    if (empty($_GET['turma']) && empty($_GET['gerencia'])) {
         $db = DB::connect();
         $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadores.disponivel, usuarios.matriculasupervisor from operadores, usuarios");
         $sql->execute();
