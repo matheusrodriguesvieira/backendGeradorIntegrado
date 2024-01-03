@@ -28,7 +28,7 @@ if ($acao == 'index' && $parametro == '') {
         }
 
         for ($i = 0; $i < count($obj); $i++) {
-            $obj[$i]['autorizadoOperar'] = [];
+
 
             $sql = $db->prepare("SELECT * from operadores where operadores.matricula = ?");
             $sql->execute([$obj[$i]['matricula']]);
@@ -37,12 +37,13 @@ if ($acao == 'index' && $parametro == '') {
             unset($operador['matricula']);
             unset($operador['disponivel']);
 
-            $obj[$i]['autorizadoOperar'][] = $operador;
+            $obj[$i]['autorizadoOperar'] = $operador;
         }
 
         echo json_encode($obj);
         exit;
     }
+
     if (empty($_GET['turma']) || empty($_GET['gerencia'])) {
         $db = DB::connect();
         $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadores.disponivel, usuarios.matriculasupervisor from operadores, usuarios");
@@ -61,7 +62,6 @@ if ($acao == 'index' && $parametro == '') {
 
 
         for ($i = 0; $i < count($obj); $i++) {
-            $obj[$i]['autorizadoOperar'] = [];
 
             $sql = $db->prepare("SELECT * from operadores where operadores.matricula = ?");
             $sql->execute([$obj[$i]['matricula']]);
@@ -70,7 +70,7 @@ if ($acao == 'index' && $parametro == '') {
             unset($operador['matricula']);
             unset($operador['disponivel']);
 
-            $obj[$i]['autorizadoOperar'][] = $operador;
+            $obj[$i]['autorizadoOperar'] = $operador;
         }
 
 
@@ -97,7 +97,6 @@ if ($acao == 'index' && $parametro == '') {
         }
 
         for ($i = 0; $i < count($obj); $i++) {
-            $obj[$i]['autorizadoOperar'] = [];
 
             $sql = $db->prepare("SELECT * from operadores where operadores.matricula = ?");
             $sql->execute([$obj[$i]['matricula']]);
@@ -106,7 +105,7 @@ if ($acao == 'index' && $parametro == '') {
             unset($operador['matricula']);
             unset($operador['disponivel']);
 
-            $obj[$i]['autorizadoOperar'][] = $operador;
+            $obj[$i]['autorizadoOperar'] = $operador;
         }
 
         echo json_encode($obj);
@@ -131,7 +130,6 @@ if ($acao == 'index' && $parametro == '') {
         }
 
         for ($i = 0; $i < count($obj); $i++) {
-            $obj[$i]['autorizadoOperar'] = [];
 
             $sql = $db->prepare("SELECT * from operadores where operadores.matricula = ?");
             $sql->execute([$obj[$i]['matricula']]);
@@ -140,7 +138,7 @@ if ($acao == 'index' && $parametro == '') {
             unset($operador['matricula']);
             unset($operador['disponivel']);
 
-            $obj[$i]['autorizadoOperar'][] = $operador;
+            $obj[$i]['autorizadoOperar'] = $operador;
         }
 
         echo json_encode($obj);
