@@ -12,9 +12,17 @@ if ($acao == 'index' && $parametro == '') {
 
         $db = DB::connect();
         // $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadores.disponivel, usuarios.matriculasupervisor from operadores, usuarios");
-        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, usuarios.turma, gerencia.nome as gerencia, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5 and usuarios.turma = ? and usuarios.idgerencia = ?");
+        $sql = $db->prepare("SELECT usuarios.nome, usuarios.turma, gerencia.nome as gerencia, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5 and usuarios.turma = ? and usuarios.idgerencia = ?");
         $sql->execute([$turma, $gerencia]);
-        $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
+        $resultado1 = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        $sql = $db->prepare("SELECT * from operadores where operadores.matricula > 5");
+        $sql->execute();
+        $resultado2 = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+
+        $obj = [$resultado1, $resultado2];
+
 
         if (!$obj) {
             $response = array(
@@ -32,12 +40,14 @@ if ($acao == 'index' && $parametro == '') {
         // $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadores.disponivel, usuarios.matriculasupervisor from operadores, usuarios");
         $sql = $db->prepare("SELECT usuarios.nome, usuarios.turma, gerencia.nome as gerencia, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5");
         $sql->execute();
-        $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
+        $resultado1 = $sql->fetchAll(PDO::FETCH_ASSOC);
 
         $sql = $db->prepare("SELECT * from operadores where operadores.matricula > 5");
         $sql->execute();
 
-        $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
+        $resultado2 = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        $obj = [$resultado1, $resultado2];
 
         if (!$obj) {
             $response = array(
@@ -56,9 +66,16 @@ if ($acao == 'index' && $parametro == '') {
         $turma = $_GET['turma'];
 
         $db = DB::connect();
-        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, usuarios.turma, gerencia.nome as gerencia, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5 and usuarios.turma = ?");
+        $sql = $db->prepare("SELECT usuarios.nome, usuarios.turma, gerencia.nome as gerencia, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5 and usuarios.turma = ?");
         $sql->execute([$turma]);
-        $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
+        $resultado1 = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        $sql = $db->prepare("SELECT * from operadores where operadores.matricula > 5");
+        $sql->execute();
+        $resultado2 = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+
+        $obj = [$resultado1, $resultado2];
 
         if (!$obj) {
             $response = array(
@@ -77,9 +94,17 @@ if ($acao == 'index' && $parametro == '') {
         $gerencia = $_GET['gerencia'];
 
         $db = DB::connect();
-        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, usuarios.turma, gerencia.nome as gerencia, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5 and usuarios.idgerencia = ?");
+        $sql = $db->prepare("SELECT usuarios.nome, usuarios.turma, gerencia.nome as gerencia, usuarios.matriculasupervisor, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5 and usuarios.idgerencia = ?");
         $sql->execute([$gerencia]);
-        $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
+        $resultado1 = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+
+        $sql = $db->prepare("SELECT * from operadores where operadores.matricula > 5");
+        $sql->execute();
+        $resultado2 = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+
+        $obj = [$resultado1, $resultado2];
 
         if (!$obj) {
             $response = array(
