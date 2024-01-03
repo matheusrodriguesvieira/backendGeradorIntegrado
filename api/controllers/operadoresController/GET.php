@@ -5,7 +5,7 @@ if ($acao == 'index' && $parametro == '') {
     // PEGA TODOS OS OPERADORES
     // ---------------------------------------
 
-    if (!empty($_GET['turma']) || !empty($_GET['gerencia'])) {
+    if (!empty($_GET['turma']) && !empty($_GET['gerencia'])) {
 
         $turma = $_GET['turma'];
         $gerencia = $_GET['gerencia'];
