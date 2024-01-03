@@ -31,7 +31,7 @@ if ($acao == 'index' && $parametro == '') {
             $obj[$i]['autorizadoOperar'] = [];
 
             $sql = $db->prepare("SELECT * from operadores where operadores.matricula = ?");
-            $sql->execute([$obj['matricula']]);
+            $sql->execute([$obj[$i]['matricula']]);
             $operador = $sql->fetchAll(PDO::FETCH_ASSOC);
 
             unset($operador['matricula']);
@@ -64,7 +64,7 @@ if ($acao == 'index' && $parametro == '') {
             $obj[$i]['autorizadoOperar'] = [];
 
             $sql = $db->prepare("SELECT * from operadores where operadores.matricula = ?");
-            $sql->execute([$obj['matricula']]);
+            $sql->execute([$obj[$i]['matricula']]);
             $operador = $sql->fetchAll(PDO::FETCH_ASSOC);
 
             unset($operador['matricula']);
@@ -100,7 +100,7 @@ if ($acao == 'index' && $parametro == '') {
             $obj[$i]['autorizadoOperar'] = [];
 
             $sql = $db->prepare("SELECT * from operadores where operadores.matricula = ?");
-            $sql->execute([$obj['matricula']]);
+            $sql->execute([$obj[$i]['matricula']]);
             $operador = $sql->fetchAll(PDO::FETCH_ASSOC);
 
             unset($operador['matricula']);
@@ -134,7 +134,7 @@ if ($acao == 'index' && $parametro == '') {
             $obj[$i]['autorizadoOperar'] = [];
 
             $sql = $db->prepare("SELECT * from operadores where operadores.matricula = ?");
-            $sql->execute([$obj['matricula']]);
+            $sql->execute([$obj[$i]['matricula']]);
             $operador = $sql->fetchAll(PDO::FETCH_ASSOC);
 
             unset($operador['matricula']);
