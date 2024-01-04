@@ -79,7 +79,7 @@ if ($acao == 'store' && $parametro == '') {
     }
 
     foreach ($dados['escala'] as $escala) {
-        if (!array_key_exists('matricula', $escala) || !array_key_exists('tag', $escala) || !array_key_exists('localizacao', $escala) || !array_key_exists('atividade', $escala) || !array_key_exists('transporte', $escala)) {
+        if (!array_key_exists('matricula', $escala) || !array_key_exists('tagequipamento', $escala) || !array_key_exists('localtrabalho', $escala) || !array_key_exists('atividade', $escala) || !array_key_exists('tagtransporte', $escala)) {
             echo json_encode([
                 "message" => "Parâmetros incompletos."
             ]);
@@ -135,7 +135,7 @@ if ($acao == 'store' && $parametro == '') {
     // VERIFICANDO SE O EQUIPAMENTO ESTÁ EM MULTIPLOS CAMPOS
     // ---------------------------------------
     for ($i = 0; $i < count($dados['escala']); $i++) {
-        if (count(array_values(array_filter($dados['escala'], fn ($element) => $element['tag'] == $dados['escala'][$i]['tag']))) > 1) {
+        if (count(array_values(array_filter($dados['escala'], fn ($element) => $element['tagequipamento'] == $dados['escala'][$i]['tagequipamento']))) > 1) {
             echo json_encode([
                 "message" => "Equipamento escalado em múltiplos campos."
             ]);
@@ -197,13 +197,13 @@ if ($acao == 'store' && $parametro == '') {
             }
 
             $sql = $db->prepare('SELECT * from equipamentos where equipamentos.tag = ?');
-            $sql->execute([$escala['tag']]);
+            $sql->execute([$escala['tagequipamento']]);
             $equipamento = $sql->fetch(PDO::FETCH_ASSOC);
 
 
             if (!$equipamento) {
                 echo json_encode([
-                    "message" => "Equipamento {$escala['tag']} não encontrado.",
+                    "message" => "Equipamento {$escala['tagequipamento']} não encontrado.",
                 ]);
                 exit;
             }
@@ -218,7 +218,7 @@ if ($acao == 'store' && $parametro == '') {
             }
 
             $sql = $db->prepare('select * from transporte where tag = ?');
-            $sql->execute([$escala['transporte']]);
+            $sql->execute([$escala['tagtransporte']]);
             $transporte = $sql->fetch(PDO::FETCH_ASSOC);
 
             if (!$transporte) {
@@ -272,7 +272,7 @@ if ($acao == 'store' && $parametro == '') {
         $sql = $db->prepare($comando);
 
         foreach (array_values($dados['escala']) as $valores) {
-            $sql->execute([$valores['matricula'], $valores['tag'], $idLista, $valores['localizacao'], $valores['atividade'], $valores['transporte']]);
+            $sql->execute([$valores['matricula'], $valores['tagequipamento'], $idLista, $valores['localtrabalho'], $valores['atividade'], $valores['tagtransporte']]);
         }
 
 
