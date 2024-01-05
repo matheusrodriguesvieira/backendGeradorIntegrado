@@ -5,6 +5,36 @@ if ($acao == 'index' && $parametro == '') {
     // PEGA TODOS OS OPERADORES
     // ---------------------------------------
 
+    if (!empty($_GET['codigos']) && $_GET['codigos'] === 'true') {
+        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadores.disponivel from usuarios, operadores where operadores.matricula = usuarios.matricula and usuarios.matricula < 6");
+
+        if (!$obj) {
+            $response = array(
+                "message" => "Nenhum operador encontrado!"
+            );
+            echo json_encode($response);
+            exit;
+        }
+
+
+        for ($i = 0; $i < count($obj); $i++) {
+
+            $sql = $db->prepare("SELECT * from operadores where operadores.matricula = ?");
+            $sql->execute([$obj[$i]['matricula']]);
+            $operador = $sql->fetch(PDO::FETCH_ASSOC);
+
+            unset($operador['matricula']);
+            unset($operador['disponivel']);
+
+            $obj[$i]['autorizadoOperar'] = $operador;
+        }
+
+
+        echo json_encode($obj);
+        exit;
+    }
+
+
     if (!empty($_GET['turma']) && !empty($_GET['gerencia'])) {
 
         $turma = $_GET['turma'];
@@ -46,19 +76,8 @@ if ($acao == 'index' && $parametro == '') {
 
     if (empty($_GET['turma']) && empty($_GET['gerencia'])) {
         $db = DB::connect();
-        $sql;
-
-        if (!empty($_GET['codigos']) && $_GET['codigos'] === 'true') {
-            $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, usuarios.turma, usuarios.idgerencia as gerencia, operadores.disponivel from usuarios, operadores where operadores.matricula = usuarios.matricula");
-        } else {
-            $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, usuarios.turma, gerencia.nome as gerencia, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5");
-        }
-
-
-
-
+        $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, usuarios.turma, gerencia.nome as gerencia, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5");
         $sql->execute();
-
 
         $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
