@@ -37,7 +37,7 @@
         }
 
         foreach ($dados['escala'] as $escala) {
-            if (!array_key_exists('matricula', $escala) || !array_key_exists('tag', $escala) || !array_key_exists('localizacao', $escala) || !array_key_exists('atividade', $escala) || !array_key_exists('transporte', $escala)) {
+            if (!array_key_exists('matricula', $escala) || !array_key_exists('tagequipamento', $escala) || !array_key_exists('localtrabalho', $escala) || !array_key_exists('atividade', $escala) || !array_key_exists('tagtransporte', $escala)) {
                 echo json_encode([
                     "error" => true,
                     "message" => "Parâmetros incompletos."
@@ -63,7 +63,7 @@
         }
 
         for ($i = 0; $i < count($dados['escala']); $i++) {
-            if (count(array_values(array_filter($dados['escala'], fn ($element) => $element['tag'] == $dados['escala'][$i]['tag']))) > 1) {
+            if (count(array_values(array_filter($dados['escala'], fn ($element) => $element['tagequipamento'] == $dados['escala'][$i]['tagequipamento']))) > 1) {
                 echo json_encode([
                     "error" => true,
                     "message" => "Equipamento escalado em múltiplos campos."
@@ -101,14 +101,14 @@
                 // VERIFICANDO SE O equipamento existe
                 // ---------------------------------------
                 $sql = $db->prepare('SELECT * from equipamentos where equipamentos.tag = ?');
-                $sql->execute([$dados['escala'][$i]['tag']]);
+                $sql->execute([$dados['escala'][$i]['tagequipamento']]);
                 $equipamento = $sql->fetch(PDO::FETCH_ASSOC);
 
 
                 if (!$equipamento) {
                     echo json_encode([
                         "error" => true,
-                        "message" => "Equipamento {$dados['escala'][$i]['tag']} não encontrado.",
+                        "message" => "Equipamento {$dados['escala'][$i]['tagequipamento']} não encontrado.",
                     ]);
                     exit;
                 }
@@ -117,7 +117,7 @@
                 // VERIFICANDO SE O transporte existe
                 // ---------------------------------------
                 $sql = $db->prepare('select * from transporte where tag = ?');
-                $sql->execute([$dados['escala'][$i]['transporte']]);
+                $sql->execute([$dados['escala'][$i]['tagtransporte']]);
                 $transporte = $sql->fetch(PDO::FETCH_ASSOC);
 
                 if (!$transporte) {
@@ -145,7 +145,7 @@
                 // VERIFICANDO SE O OPERADOR já esta escalado
                 // ---------------------------------------
                 $sql = $db->prepare('SELECT * from operadorequipamento where operadorequipamento.matricula = ? and operadorequipamento.idlista = ? and operadorequipamento.tagequipamento != ? and operadorequipamento.matricula not between 1 and 5');
-                $sql->execute([$dados['escala'][$i]['matricula'], $parametro, $dados['escala'][$i]['tag']]);
+                $sql->execute([$dados['escala'][$i]['matricula'], $parametro, $dados['escala'][$i]['tagequipamento']]);
                 $operador = $sql->fetch(PDO::FETCH_ASSOC);
 
                 if ($operador) {
@@ -161,7 +161,7 @@
             foreach ($dados['escala'] as $valor) {
 
                 $sql = $db->prepare("SELECT * FROM operadorequipamento WHERE operadorequipamento.idlista = ? and operadorequipamento.tagequipamento = ?");
-                $sql->execute([$parametro, $valor['tag']]);
+                $sql->execute([$parametro, $valor['tagequipamento']]);
                 $obj = $sql->fetch(PDO::FETCH_ASSOC);
 
                 if (!$obj) {
@@ -189,7 +189,7 @@
                 }
 
                 $sql = $db->prepare("UPDATE operadorequipamento SET  matricula = ?, localtrabalho = ?, atividade = ?, tagtransporte = ? WHERE operadorequipamento.idlista = ? and operadorequipamento.tagequipamento = ?");
-                $sql->execute([$valor['matricula'], $valor['localizacao'], $valor['atividade'], $valor['transporte'], $parametro, $valor['tag']]);
+                $sql->execute([$valor['matricula'], $valor['localtrabalho'], $valor['atividade'], $valor['tagtransporte'], $parametro, $valor['tagequipamento']]);
             }
 
             $db->commit();
