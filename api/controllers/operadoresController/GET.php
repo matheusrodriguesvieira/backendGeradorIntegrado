@@ -6,8 +6,10 @@ if ($acao == 'index' && $parametro == '') {
     // ---------------------------------------
 
     if (!empty($_GET['codigos']) && $_GET['codigos'] === 'true') {
+        $db = DB::connect();
         $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, operadores.disponivel from usuarios, operadores where operadores.matricula = usuarios.matricula and usuarios.matricula < 6");
-
+        $sql->execute();
+        $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
         if (!$obj) {
             $response = array(
                 "message" => "Nenhum operador encontrado!"
