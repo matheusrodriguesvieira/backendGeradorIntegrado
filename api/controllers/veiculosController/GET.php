@@ -4,30 +4,22 @@ if ($acao == 'index' && $parametro == '') {
     // ---------------------------------------
     // PEGA TODOS OS OPERADORES
     // ---------------------------------------
+    $db = DB::connect();
 
+    $sql = $db->prepare("SELECT * from transporte");
+    $sql->execute();
+    $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-    if (!empty($_GET['turma']) && !empty($_GET['gerencia'])) {
-
-        $turma = $_GET['turma'];
-        $gerencia = $_GET['gerencia'];
-
-        $db = DB::connect();
-
-        $sql = $db->prepare("SELECT * from transporte");
-        $sql->execute();
-        $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-        if (!$obj) {
-            $response = array(
-                "message" => "Nenhum transporte encontrado!"
-            );
-            echo json_encode($response);
-            exit;
-        }
-
-        echo json_encode($obj);
+    if (!$obj) {
+        $response = array(
+            "message" => "Nenhum transporte encontrado!"
+        );
+        echo json_encode($response);
         exit;
     }
+
+    echo json_encode($obj);
+    exit;
 }
 
 if ($acao == 'show' && $parametro != '') {
