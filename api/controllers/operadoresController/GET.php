@@ -48,17 +48,16 @@ if ($acao == 'index' && $parametro == '') {
         $db = DB::connect();
         $sql;
 
-        if (!empty($_GET['codigos'])) {
-            $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, usuarios.turma, gerencia.nome as gerencia, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia");
-            $sql->execute();
+        if (!empty($_GET['codigos']) && $_GET['codigos'] === 'true') {
+            $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, usuarios.turma, usuarios.idgerencia as gerencia, operadores.disponivel from usuarios, operadores where operadores.matricula = usuarios.matricula");
         } else {
             $sql = $db->prepare("SELECT operadores.matricula, usuarios.nome, usuarios.turma, gerencia.nome as gerencia, operadores.disponivel from usuarios, operadores, gerencia where operadores.matricula = usuarios.matricula and gerencia.id = usuarios.idgerencia and usuarios.matricula > 5");
-            $sql->execute();
         }
 
 
 
 
+        $sql->execute();
 
 
         $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
