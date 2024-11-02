@@ -33,7 +33,13 @@ if (isset($path[2])) {
     $parametro = '';
 }
 
+$db = DB::connect();
+$sql = $db->prepare("SELECT * FROM usuarios");
+$sql->execute();
+$obj = $sql->fetchAll(PDO::FETCH_ASSOC);
+
 $metodo = $_SERVER['REQUEST_METHOD'];
+exit;
 
 // $response = array(
 //     "api" => "{$api}",
