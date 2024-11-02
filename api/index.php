@@ -39,6 +39,7 @@ $sql->execute();
 $obj = $sql->fetchAll(PDO::FETCH_ASSOC);
 
 $metodo = $_SERVER['REQUEST_METHOD'];
+echo json_encode($obj)
 exit;
 
 // $response = array(
