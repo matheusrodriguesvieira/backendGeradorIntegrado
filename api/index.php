@@ -33,15 +33,6 @@ if (isset($path[2])) {
     $parametro = '';
 }
 
-$db = DB::connect();
-$sql = $db->prepare("SELECT * FROM usuarios");
-$sql->execute();
-$obj = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-$metodo = $_SERVER['REQUEST_METHOD'];
-echo json_encode($obj);
-exit;
-
 // $response = array(
 //     "api" => "{$api}",
 //     "acao" => "{$acao}",
@@ -54,6 +45,17 @@ exit;
 
 
 require_once(realpath(dirname(__FILE__) . '/database/DB.php'));
+
+
+$db = DB::connect();
+$sql = $db->prepare("SELECT * FROM usuarios");
+$sql->execute();
+$obj = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+$metodo = $_SERVER['REQUEST_METHOD'];
+echo json_encode($obj);
+exit;
+
 require_once(realpath(dirname(__FILE__) . '/jwt/JWT.php'));
 require_once(realpath(dirname(__FILE__) . '/auth/auth.php'));
 require_once(realpath(dirname(__FILE__) . '/auth/login.php'));
